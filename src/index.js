@@ -1,40 +1,12 @@
-import http from "http";
-import express from "express";
-import cors from "cors";
-import morgan from "morgan";
-import bodyParser from "body-parser";
-import middleware from "./middleware";
-import api from "./api";
-import envVariables from "./envVariables";
-import db from "./db";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import * as serviceWorker from './serviceWorker';
 
+ReactDOM.render(<App />, document.getElementById('root'));
 
-let app = express();
-app.server = http.createServer(app);
-
-// logger
-app.use(morgan("dev"));
-
-// 3rd party middleware
-app.use(
-  cors({
-    exposedHeaders: envVariables.corsHeaders
-  })
-);
-
-app.use(
-  bodyParser.json({
-    limit: envVariables.bodyLimit
-  })
-);
-
-app.use(middleware({ envVariables, db }));
-
-// api router
-app.use("/api", api({ envVariables, db }));
-
-app.server.listen(process.env.PORT || envVariables.SERVER_PORT, () => {
-  console.log(`Started on port ${app.server.address().port}`);
-});
-
-export default app;
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
